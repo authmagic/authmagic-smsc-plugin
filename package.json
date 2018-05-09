@@ -1,0 +1,19 @@
+{
+  "name": "authmagic-email-plugin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "plugin.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.10",
+    "node-smsc": "^0.2.3",
+    "nodemailer": "^4.6.4",
+    "nunjucks": "^3.1.2",
+    "striptags": "^3.1.1"
+  }
+}
