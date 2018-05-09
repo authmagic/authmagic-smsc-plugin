@@ -1,5 +1,5 @@
 {
-  "name": "authmagic-email-plugin",
+  "name": "authmagic-smsc-plugin",
   "version": "1.0.0",
   "description": "",
   "main": "plugin.js",
@@ -10,10 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "lodash": "^4.17.10",
-    "node-smsc": "^0.2.3",
-    "nodemailer": "^4.6.4",
-    "nunjucks": "^3.1.2",
-    "striptags": "^3.1.1"
+    "node-smsc": "^0.2.3"
   }
 }
