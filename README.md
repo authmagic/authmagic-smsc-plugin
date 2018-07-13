@@ -9,7 +9,7 @@ authmagic install authmagic-smsc-plugin
 
 ## How it works
 User receives an sms and then by clicking on it gets token and authmagic redirects him back to application.
-
+<img src="https://github.com/authmagic/authmagic/blob/master/docs/images/authmagic-smsc.jpg?raw=true" width="350px" />
 
 ## Params
 Plugin depends on the <a href="https://github.com/rmdm/node-smsc">node-smsc</a>, params are the same.
