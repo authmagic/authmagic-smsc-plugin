@@ -1,3 +1,5 @@
+<img src="https://github.com/authmagic/authmagic/blob/master/docs/images/logo.png?raw=true" width="300px"/>
+
 # authmagic-smsc-plugin
 Plugin for <a href="https://github.com/authmagic/authmagic">authmagic</a> to send authorization links on sms via <a href="https://smsc.ua">smsc</a> service. It works with <a href="https://github.com/authmagic/authmagic-timerange-stateless-core">authmagic-timerange-stateless-core</a>.
 
@@ -13,3 +15,7 @@ User receives an sms and then by clicking on it gets token and authmagic redirec
 
 ## Params
 Plugin depends on the <a href="https://github.com/rmdm/node-smsc">node-smsc</a>, params are the same.
+
+Licence
+-----------
+authmagic-smsc-plugin is [MIT licensed](./LICENSE).
