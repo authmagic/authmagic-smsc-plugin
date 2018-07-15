@@ -15,3 +15,7 @@ User receives an sms and then by clicking on it gets token and authmagic redirec
 
 ## Params
 Plugin depends on the <a href="https://github.com/rmdm/node-smsc">node-smsc</a>, params are the same.
+
+Licence
+-----------
+authmagic-smsc-plugin [MIT licensed](./LICENSE).
