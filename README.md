@@ -18,4 +18,4 @@ Plugin depends on the <a href="https://github.com/rmdm/node-smsc">node-smsc</a>,
 
 Licence
 -----------
-authmagic-smsc-plugin [MIT licensed](./LICENSE).
+authmagic-smsc-plugin is [MIT licensed](./LICENSE).
