@@ -8,7 +8,7 @@
   },
   "keywords": ["auth", "authentication", "authorization", "openid", "oauth2", "sms", "smsc"],
   "author": "Oleksandr Knyga <oleksandrknyga@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "node-smsc": "^0.2.3"
   }
