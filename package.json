@@ -1,18 +1,30 @@
 {
   "name": "authmagic-smsc-plugin",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "plugin.js",
   "engines": {
-    "node" : ">=8.10.0"
+    "node": ">=8.10.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
-  "keywords": ["auth", "authentication", "authorization", "openid", "oauth2", "sms", "smsc"],
+  "keywords": [
+    "auth",
+    "authentication",
+    "authorization",
+    "openid",
+    "oauth2",
+    "sms",
+    "smsc"
+  ],
   "author": "Oleksandr Knyga <oleksandrknyga@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "node-smsc": "^0.2.3"
+    "lodash": "^4.17.10",
+    "node-fetch": "^2.2.0"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
   }
 }

@@ -1,5 +1,16 @@
-// https://github.com/rmdm/node-smsc/blob/HEAD/docs/
 module.exports = {
-  login: '',
-  password: '',
+  isTest: true,
+  smsc: {
+    login: '',
+    psw: ''
+  },
+  shortUrl: {
+    // bit.ly would refuse url shortification if you would like to use localhost
+    isTurnedOn: false,
+    provider: 'bit.ly',
+    params: {
+      login: '',
+      apiKey: ''
+    }
+  },
 };
