@@ -17,7 +17,7 @@ const getMessage = (options, template) => {
     return new Promise((resolve, reject) => {
       shorturl(url, shortUrl.provider, shortUrl.params, function(result) {
         if(_.isString(result)) {
-          resolve(template({url: result, securityKey}));
+          resolve(template({...options, url: result, securityKey}));
         } else {
           reject(result);
         }
