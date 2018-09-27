@@ -43,6 +43,7 @@ module.exports = function (options, template, action) {
         ...smsc,
         phones,
         mes,
+        charset: 'utf-8',
       })}`)
     }
   }
