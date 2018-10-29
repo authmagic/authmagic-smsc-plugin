@@ -30,7 +30,7 @@ const getMessage = (options, template) => {
 
 module.exports = function (options, template, action) {
   const user = options.user.replace(/[^\d]/g, '');
-  const {smsc, isTest} = getParams(options);
+  const { smsc, isTest, timeout = 2000 } = getParams(options);
   if(_.isUndefined(template)) {
     template = require(path.resolve(`./static/${pluginName}/template.js`));
   }
@@ -39,12 +39,31 @@ module.exports = function (options, template, action) {
     if(isTest) {
       action = console.log;
     } else {
-      action = ({phones, mes}) => fetch(`https://smsc.ru/sys/send.php?${querystring.stringify({
-        ...smsc,
-        phones,
-        mes,
-        charset: 'utf-8',
-      })}`)
+      action = ({phones, mes}) => {
+        function sendMessage() {
+          return fetch(`https://smsc.ru/sys/send.php?${querystring.stringify({
+            ...smsc,
+            phones,
+            mes,
+            charset: 'utf-8',
+          })}`)
+          .then(res => {
+            if (res.status === 200) {
+              return res;
+            } else {
+              throw new Error(res.statusText);
+            }
+          })
+          .catch(e => {
+            console.log(e);
+            setTimeout(() => {
+              sendMessage();
+            }, timeout);
+          })
+        }
+
+        return sendMessage();
+      }
     }
   }
 

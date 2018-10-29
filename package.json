@@ -22,7 +22,8 @@
   "license": "MIT",
   "dependencies": {
     "lodash": "^4.17.10",
-    "node-fetch": "^2.2.0"
+    "node-fetch": "^2.2.0",
+    "shorturl-2": "0.0.7"
   },
   "devDependencies": {
     "mocha": "^5.2.0"
