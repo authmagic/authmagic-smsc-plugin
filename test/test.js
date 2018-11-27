@@ -41,6 +41,97 @@ describe('Plugin', function() {
         assert(_.isEqual(res, { phones: '380976290333', mes: 'To authorize enter 25-52-93' }));
         done();
       })
-      .catch(done);
+      .catch(function(e) {
+        console.log(e.toString());
+        assert.ok(false);
+        done();
+      });
+  });
+  it('should shortify link with bit.ly', function(done) {
+    plugin(_.merge(options, {
+      config: {
+        params: {
+          'authmagic-smsc-plugin': {
+            shortUrl: {
+              isTurnedOn: true,
+              params: {
+                apiKey: process.env.BITLY_API_KEY,
+              }
+            }
+          }
+        }
+      }
+    }), require('../static/template.js'), (r) => r)
+      .then((res) => {
+        const match = /click (http.+)$/.exec(res.mes);
+        if(match && match.length>1) {
+          assert.ok(true);
+        }
+        done();
+      })
+      .catch(function(e) {
+        console.log(e.toString());
+        assert.ok(false);
+        done();
+      });
+  });
+  it('should fail in case of the wrong api key for bit.ly', function(done) {
+    plugin(_.merge(options, {
+      config: {
+        params: {
+          'authmagic-smsc-plugin': {
+            shortUrl: {
+              isTurnedOn: true,
+              params: {
+                apiKey: 'xyzxyz',
+              }
+            }
+          }
+        }
+      }
+    }), require('../static/template.js'), (r) => r)
+      .then((res) => {
+        if(!(res instanceof Error)) {
+          throw new Error();
+        }
+
+        assert.ok(true);
+        done();
+      })
+      .catch(function(e) {
+        console.log(e.toString());
+        assert.ok(false);
+        done();
+      });
+  });
+  it('should fail in case of timeout for bit.ly', function(done) {
+    plugin(_.merge(options, {
+      config: {
+        params: {
+          'authmagic-smsc-plugin': {
+            shortUrl: {
+              isTurnedOn: true,
+              timeout: 20, // 20ms
+              params: {
+                apiKey: process.env.BITLY_API_KEY,
+              }
+            }
+          }
+        }
+      }
+    }), require('../static/template.js'), (r) => r)
+      .then((res) => {
+        if(!(res instanceof Error)) {
+          throw new Error();
+        }
+
+        assert.ok(true);
+        done();
+      })
+      .catch(function(e) {
+        console.log(e.toString());
+        assert.ok(false);
+        done();
+      });
   });
 });

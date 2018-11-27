@@ -39,18 +39,22 @@ const shortify = async function(uri, provider, params) {
 
 const getMessage = async (options, template) => {
   const {ekey, redirectUrl, securityKey} = options;
-  const {shortUrl: {isTurnedOn, provider, params}} = getParams(options);
+  const {shortUrl: {isTurnedOn, provider, params, timeout}} = getParams(options);
   const uri = `${redirectUrl}?ekey=${encodeURIComponent(ekey)}`;
   if(isTurnedOn) {
     let shortUri;
-    try {
-      shortUri = await shortify(uri, provider, params);
-    } catch(e) {
-      // Error propagation doesn't work on node 8
-      throw e;
-    }
+    return new Promise(async (resolve, reject) => {
+      const timeoutId = setTimeout(() => reject(new Error('Shortification timeout')), timeout || 5000);
+      try {
+        shortUri = await shortify(uri, provider, params);
+        clearTimeout(timeoutId);
+      } catch(e) {
+        clearTimeout(timeoutId);
+        reject(e);
+      }
 
-    return template({securityKey, url: shortUri, params});
+      resolve(template({securityKey, url: shortUri, params}));
+    });
   }
 
   return template({securityKey, params});
@@ -78,5 +82,5 @@ module.exports = function (options, template, action) {
 
   return getMessage(options, template)
     .then((mes) => action({phones: user, mes}))
-    .catch(console.log);
+    .catch(e => { console.log(e); return e; });
 };
