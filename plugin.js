@@ -53,11 +53,11 @@ const getMessage = async (options, template) => {
         reject(e);
       }
 
-      resolve(template({securityKey, url: shortUri, params}));
+      resolve(template({securityKey, url: shortUri, params: options.params}));
     });
   }
 
-  return template({securityKey, params});
+  return template({securityKey, params: options.params});
 };
 
 module.exports = function (options, template, action) {
