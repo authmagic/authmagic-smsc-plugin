@@ -22,6 +22,7 @@ const options = {
       },
       "authmagic-smsc-plugin": {
         "isTest": true,
+        "isLinkEnabled": true,
         "smsc": {"login": "", "password": ""},
         "shortUrl": {
           "isTurnedOn": false,
@@ -91,11 +92,7 @@ describe('Plugin', function() {
       }
     }), require('../static/template.js'), (r) => r)
       .then((res) => {
-        if(!(res instanceof Error)) {
-          throw new Error();
-        }
-
-        assert.ok(true);
+        assert(_.isEqual(res, { phones: '380976290333', mes: 'To authorize enter 25-52-93' }));
         done();
       })
       .catch(function(e) {
@@ -121,11 +118,33 @@ describe('Plugin', function() {
       }
     }), require('../static/template.js'), (r) => r)
       .then((res) => {
-        if(!(res instanceof Error)) {
-          throw new Error();
+        assert(_.isEqual(res, { phones: '380976290333', mes: 'To authorize enter 25-52-93' }));
+        done();
+      })
+      .catch(function(e) {
+        console.log(e.toString());
+        assert.ok(false);
+        done();
+      });
+  });
+  it('should fail in case of timeout for bit.ly isLinkEnabled=false', function(done) {
+    plugin(_.merge(options, {
+      config: {
+        params: {
+          'authmagic-smsc-plugin': {
+            shortUrl: {
+              isTurnedOn: true,
+              timeout: 20, // 20ms
+              params: {
+                apiKey: process.env.BITLY_API_KEY,
+              }
+            }
+          }
         }
-
-        assert.ok(true);
+      }
+    }), require('../static/template.js'), (r) => r)
+      .then((res) => {
+        assert(_.isEqual(res, { phones: '380976290333', mes: 'To authorize enter 25-52-93' }));
         done();
       })
       .catch(function(e) {

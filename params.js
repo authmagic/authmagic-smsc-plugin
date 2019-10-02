@@ -1,5 +1,6 @@
 module.exports = {
   isTest: true,
+  isLinkEnabled: true,
   smsc: {
     login: '',
     psw: ''
