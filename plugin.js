@@ -39,18 +39,21 @@ const shortify = async function(uri, provider, params) {
 
 const getMessage = async (options, template) => {
   const {ekey, redirectUrl, securityKey} = options;
-  const {shortUrl: {isTurnedOn, provider, params, timeout}} = getParams(options);
+  const { isLinkEnabled, shortUrl: {isTurnedOn, provider, params, timeout}} = getParams(options);
   const uri = `${redirectUrl}?ekey=${encodeURIComponent(ekey)}`;
-  if(isTurnedOn) {
+
+  if(isTurnedOn && isLinkEnabled) {
     let shortUri;
     return new Promise(async (resolve, reject) => {
-      const timeoutId = setTimeout(() => reject(new Error('Shortification timeout')), timeout || 5000);
+      const timeoutId = setTimeout(() => {
+        resolve(template({securityKey, params: options.params}));
+      }, timeout || 5000);
       try {
         shortUri = await shortify(uri, provider, params);
         clearTimeout(timeoutId);
       } catch(e) {
         clearTimeout(timeoutId);
-        reject(e);
+        resolve(template({securityKey, params: options.params}));
       }
 
       resolve(template({securityKey, url: shortUri, params: options.params}));
