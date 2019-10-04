@@ -22,9 +22,9 @@ const options = {
       },
       "authmagic-smsc-plugin": {
         "isTest": true,
-        "isLinkEnabled": true,
         "smsc": {"login": "", "password": ""},
         "shortUrl": {
+          "isLinkEnabled": true,
           "isTurnedOn": false,
           "provider": "bit.ly",
           "params": {"login": "yyy", "apiKey": "xxx"}

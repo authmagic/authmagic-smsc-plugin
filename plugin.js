@@ -39,7 +39,7 @@ const shortify = async function(uri, provider, params) {
 
 const getMessage = async (options, template) => {
   const {ekey, redirectUrl, securityKey} = options;
-  const { isLinkEnabled, shortUrl: {isTurnedOn, provider, params, timeout}} = getParams(options);
+  const { shortUrl: {isTurnedOn, provider, params, timeout, isLinkEnabled=true}} = getParams(options);
   const uri = `${redirectUrl}?ekey=${encodeURIComponent(ekey)}`;
 
   if(isTurnedOn && isLinkEnabled) {
