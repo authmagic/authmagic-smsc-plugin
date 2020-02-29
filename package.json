@@ -1,6 +1,6 @@
 {
   "name": "authmagic-smsc-plugin",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "",
   "main": "plugin.js",
   "engines": {
@@ -21,7 +21,7 @@
   "author": "Oleksandr Knyga <oleksandrknyga@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "bitly": "^6.0.8",
+    "bitly": "github:knyga/node-bitly#master",
     "lodash": "^4.17.10",
     "node-fetch": "^2.2.0",
     "shorturl-2": "0.0.7"
