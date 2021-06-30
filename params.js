@@ -14,4 +14,8 @@ module.exports = {
       apiKey: ''
     }
   },
+  isLimiterEnabled: false,
+  samePhoneMinTimeoutSeconds: 15,
+  samePhoneMaxMessagesPerInterval: 10,
+  limiterIntervalMinutes: 60,
 };

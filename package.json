@@ -1,6 +1,6 @@
 {
   "name": "authmagic-smsc-plugin",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "",
   "main": "plugin.js",
   "engines": {
@@ -23,6 +23,7 @@
   "dependencies": {
     "bitly": "github:knyga/node-bitly#master",
     "lodash": "^4.17.10",
+    "moment": "^2.29.1",
     "node-fetch": "^2.2.0",
     "shorturl-2": "0.0.7"
   },

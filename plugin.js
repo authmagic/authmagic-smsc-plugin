@@ -6,6 +6,7 @@ const shorturl = require('shorturl-2');
 const { BitlyClient } = require('bitly');
 const bitly = require('bitly');
 const pluginName = 'authmagic-smsc-plugin';
+const { checkRateLimitAllowed } = require('./rateLimit');
 
 const getParams = ({config:iconfig}) => {
   return iconfig ? iconfig.params ? iconfig.params[pluginName] : null : null;
@@ -65,7 +66,7 @@ const getMessage = async (options, template) => {
 
 module.exports = function (options, template, action) {
   const user = options.user.replace(/[^\d]/g, '');
-  const {smsc, isTest} = getParams(options);
+  const { smsc, isTest, ...otherParams } = getParams(options);
   if(_.isUndefined(template)) {
     template = require(path.resolve(`./static/${pluginName}/template.js`));
   }
@@ -84,6 +85,14 @@ module.exports = function (options, template, action) {
   }
 
   return getMessage(options, template)
-    .then((mes) => action({phones: user, mes}))
+    .then((mes) => {
+      checkRateLimitAllowed({ smsc, phone: user, ...otherParams })
+        .then(isAllowed => {
+          if (isAllowed) {
+            action({ phones: user, mes })
+          }
+        })
+        .catch(e => console.log(e));
+    })
     .catch(e => { console.log(e); return e; });
 };
