@@ -2,11 +2,11 @@ const path = require('path');
 const querystring = require('querystring');
 const fetch = require('node-fetch');
 const _ = require('lodash');
-const moment = require('moment');
 const shorturl = require('shorturl-2');
 const { BitlyClient } = require('bitly');
 const bitly = require('bitly');
 const pluginName = 'authmagic-smsc-plugin';
+const { checkRateLimitAllowed } = require('./rateLimit');
 
 const getParams = ({config:iconfig}) => {
   return iconfig ? iconfig.params ? iconfig.params[pluginName] : null : null;
@@ -62,51 +62,6 @@ const getMessage = async (options, template) => {
   }
 
   return template({securityKey, params: options.params});
-};
-
-const parseSms = responsedSms => _.map(
-  _.split(responsedSms, '\n'),
-  sms => _.fromPairs(_.map(
-    _.split(sms, ','),
-    value => _.map(_.split(value, '='), _.trim)
-  ))
-);
-
-const checkRateLimitAllowed = async ({
-  smsc, phone, isLimiterEnabled, samePhoneMinTimeoutSeconds, samePhoneMaxMessagesPerInterval, limiterIntervalMinutes,
-}) => {
-  if (!isLimiterEnabled) {
-    return true;
-  }
-
-  const rateLimitAllowedRules = [
-    sms => !_.some(
-      sms,
-      ({ send_date }) => moment()
-        .subtract(samePhoneMinTimeoutSeconds, 'seconds')
-        .isBefore(moment(send_date, 'DD.MM.YYYY hh:mm:ss')),
-    ),
-    sms => _.filter(
-      sms,
-      ({ send_date }) => moment()
-        .subtract(limiterIntervalMinutes, 'minutes')
-        .isBefore(moment(send_date, 'DD.MM.YYYY hh:mm:ss')))
-      .length <= samePhoneMaxMessagesPerInterval,
-  ];
-
-  const result = await fetch(
-    `https://smsc.ru/sys/get.php?get_messages=1&${querystring.stringify({
-      ...smsc,
-      phone,
-      cnt: samePhoneMaxMessagesPerInterval,
-      charset: 'utf-8',
-    })}`,
-  )
-    .then(response => response.text())
-    .then(text => parseSms(text))
-    .then(parsedSms => _.reduce(rateLimitAllowedRules, (acc, rule) => acc ? rule(parsedSms) : acc, true));
-
-  return result;
 };
 
 module.exports = function (options, template, action) {
