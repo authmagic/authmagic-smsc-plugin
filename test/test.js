@@ -3,10 +3,9 @@ const _ = require('lodash');
 const moment = require('moment');
 const plugin = require('../plugin');
 const {
-  parseSMSTableResponse,
   ruleToRestrictRetryRequestsPerPeriodInSeconds,
   ruleLimitingNumberOfRequestsForPeriodInMinutes,
-} = require('../rateLimit');
+} = require('../rateLimit/rules');
 
 const options = {
   "user": "+380976290333",
@@ -166,85 +165,36 @@ describe('Plugin', function() {
 });
 
 describe('rate limit', function() {
-  const now = moment().format('DD.MM.YYYY HH:mm:ss');
-
-  it('parseSMSTableResponse', function() {
-    const SMSTable = 'Status = 1, check_time = 28.06.2021 15:55:47, send_date = 28.06.2021 15:55:44, phone = 88002000600, mccmnc = 25503, country = Украина, operator = Kyivstar, region = , cost = 0.385, sender_id = OLLYFOOD, status_name = Доставлено, message = 78-74-08, type = 0, ID = 206113, int_id = 401671913, sms_cnt = 1, format = 0, crc = 307589946\n' +
-      'Status = 1, check_time = 28.06.2021 15:54:46, send_date = 28.06.2021 15:54:43, phone = 88002000600, mccmnc = 25503, country = Украина, operator = Kyivstar, region = , cost = 0.385, sender_id = OLLYFOOD, status_name = Доставлено, message = 78-87-57, type = 0, ID = 206112, int_id = 401656822, sms_cnt = 1, format = 0, crc = 1340818552';
-    const parsedSMSTable = parseSMSTableResponse(SMSTable);
-    const expected = [
-      {
-        ID: '206113',
-        Status: '1',
-        check_time: '28.06.2021 15:55:47',
-        cost: '0.385',
-        country: 'Украина',
-        crc: '307589946',
-        format: '0',
-        int_id: '401671913',
-        mccmnc: '25503',
-        message: '78-74-08',
-        operator: 'Kyivstar',
-        phone: '88002000600',
-        region: '',
-        send_date: '28.06.2021 15:55:44',
-        sender_id: 'OLLYFOOD',
-        sms_cnt: '1',
-        status_name: 'Доставлено',
-        type: '0'
-      },
-      {
-        ID: '206112',
-        Status: '1',
-        check_time: '28.06.2021 15:54:46',
-        cost: '0.385',
-        country: 'Украина',
-        crc: '1340818552',
-        format: '0',
-        int_id: '401656822',
-        mccmnc: '25503',
-        message: '78-87-57',
-        operator: 'Kyivstar',
-        phone: '88002000600',
-        region: '',
-        send_date: '28.06.2021 15:54:43',
-        sender_id: 'OLLYFOOD',
-        sms_cnt: '1',
-        status_name: 'Доставлено',
-        type: '0'
-      }
-    ];
-    assert.deepEqual(parsedSMSTable, expected);
-  });
+  const now = _.round(moment() / 1000);
 
   it('ruleToRestrictRetryRequestsPerPeriodInSeconds', function() {
     const params = options.config.params['authmagic-smsc-plugin'];
-    const send_date = moment().subtract(20, 'seconds').format('DD.MM.YYYY HH:mm:ss');
+    const send_timestamp = _.round(moment().subtract(20, 'seconds') / 1000);
 
     assert.deepEqual(
-      ruleToRestrictRetryRequestsPerPeriodInSeconds([{ send_date }], params),
+      ruleToRestrictRetryRequestsPerPeriodInSeconds([{ send_timestamp }], params),
       true,
     );
     assert.deepEqual(
-      ruleToRestrictRetryRequestsPerPeriodInSeconds([{ send_date: now }], params),
+      ruleToRestrictRetryRequestsPerPeriodInSeconds([{ send_timestamp: now }], params),
       false,
     );
   });
 
   it('ruleLimitingNumberOfRequestsForPeriodInMinutes', function() {
     const params = options.config.params['authmagic-smsc-plugin'];
-    const send_date = moment().subtract(65, 'minutes').format('DD.MM.YYYY HH:mm:ss');
+    const send_timestamp = _.round(moment().subtract(65, 'minutes') / 1000);
 
     assert.deepEqual(
-      ruleLimitingNumberOfRequestsForPeriodInMinutes([{ send_date: now }], params),
+      ruleLimitingNumberOfRequestsForPeriodInMinutes([{ send_timestamp: now }], params),
       true,
     );
     assert.deepEqual(
-      ruleLimitingNumberOfRequestsForPeriodInMinutes(_.fill(new Array(11), { send_date: now }), params),
+      ruleLimitingNumberOfRequestsForPeriodInMinutes(_.fill(new Array(11), { send_timestamp: now }), params),
       false,
     );
     assert.deepEqual(
-      ruleLimitingNumberOfRequestsForPeriodInMinutes(_.fill(new Array(11), { send_date }), params),
+      ruleLimitingNumberOfRequestsForPeriodInMinutes(_.fill(new Array(11), { send_timestamp }), params),
       true,
     );
   });

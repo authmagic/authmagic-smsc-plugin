@@ -6,7 +6,7 @@ const shorturl = require('shorturl-2');
 const { BitlyClient } = require('bitly');
 const bitly = require('bitly');
 const pluginName = 'authmagic-smsc-plugin';
-const { checkRateLimitAllowed } = require('./rateLimit');
+const checkRateLimitAllowed = require('./rateLimit');
 
 const getParams = ({config:iconfig}) => {
   return iconfig ? iconfig.params ? iconfig.params[pluginName] : null : null;

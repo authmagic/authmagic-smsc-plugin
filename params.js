@@ -18,4 +18,5 @@ module.exports = {
   samePhoneMinTimeoutSeconds: 15,
   samePhoneMaxMessagesPerInterval: 10,
   limiterIntervalMinutes: 60,
+  limiterStoreTTLMinutes: 30,
 };
