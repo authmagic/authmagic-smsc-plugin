@@ -1,11 +1,8 @@
 {
   "name": "authmagic-smsc-plugin",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "",
   "main": "plugin.js",
-  "engines": {
-    "node": ">=8.10.0"
-  },
   "scripts": {
     "test": "mocha"
   },
