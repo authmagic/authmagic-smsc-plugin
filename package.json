@@ -3,9 +3,6 @@
   "version": "0.0.14",
   "description": "",
   "main": "plugin.js",
-  "engines": {
-    "node": ">=8.10.0"
-  },
   "scripts": {
     "test": "mocha"
   },
@@ -25,6 +22,7 @@
     "lodash": "^4.17.10",
     "moment": "^2.29.1",
     "node-fetch": "^2.2.0",
+    "rate-limiter-flexible": "^2.2.2",
     "shorturl-2": "0.0.7"
   },
   "devDependencies": {

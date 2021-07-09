@@ -1,11 +1,6 @@
 const assert = require('assert');
 const _ = require('lodash');
-const moment = require('moment');
 const plugin = require('../plugin');
-const {
-  ruleToRestrictRetryRequestsPerPeriodInSeconds,
-  ruleLimitingNumberOfRequestsForPeriodInMinutes,
-} = require('../rateLimit/rules');
 
 const options = {
   "user": "+380976290333",
@@ -161,41 +156,5 @@ describe('Plugin', function() {
         assert.ok(false);
         done();
       });
-  });
-});
-
-describe('rate limit', function() {
-  const now = _.round(moment() / 1000);
-
-  it('ruleToRestrictRetryRequestsPerPeriodInSeconds', function() {
-    const params = options.config.params['authmagic-smsc-plugin'];
-    const send_timestamp = _.round(moment().subtract(20, 'seconds') / 1000);
-
-    assert.deepEqual(
-      ruleToRestrictRetryRequestsPerPeriodInSeconds([{ send_timestamp }], params),
-      true,
-    );
-    assert.deepEqual(
-      ruleToRestrictRetryRequestsPerPeriodInSeconds([{ send_timestamp: now }], params),
-      false,
-    );
-  });
-
-  it('ruleLimitingNumberOfRequestsForPeriodInMinutes', function() {
-    const params = options.config.params['authmagic-smsc-plugin'];
-    const send_timestamp = _.round(moment().subtract(65, 'minutes') / 1000);
-
-    assert.deepEqual(
-      ruleLimitingNumberOfRequestsForPeriodInMinutes([{ send_timestamp: now }], params),
-      true,
-    );
-    assert.deepEqual(
-      ruleLimitingNumberOfRequestsForPeriodInMinutes(_.fill(new Array(11), { send_timestamp: now }), params),
-      false,
-    );
-    assert.deepEqual(
-      ruleLimitingNumberOfRequestsForPeriodInMinutes(_.fill(new Array(11), { send_timestamp }), params),
-      true,
-    );
   });
 });
