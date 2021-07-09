@@ -28,11 +28,7 @@ const options = {
           "isTurnedOn": false,
           "provider": "bit.ly",
           "params": {"login": "yyy", "apiKey": "xxx"}
-        },
-        "isLimiterEnabled": true,
-        "samePhoneMinTimeoutSeconds": 15,
-        "samePhoneMaxMessagesPerInterval": 10,
-        "limiterIntervalMinutes": 60
+        }
       }
     },
     "theme": {"name": "authmagic-link-email-phone-bootstrap-theme"}
