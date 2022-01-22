@@ -21,7 +21,7 @@
     "bitly": "github:knyga/node-bitly#master",
     "lodash": "^4.17.10",
     "moment": "^2.29.1",
-    "node-fetch": "^2.2.0",
+    "node-fetch": "^3.1.1",
     "shorturl-2": "0.0.7"
   },
   "devDependencies": {
